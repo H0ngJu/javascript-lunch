@@ -103,7 +103,7 @@ const RestaurantList = [Rest1, Rest2, Rest3, Rest4, Rest5, Rest6];
 const HEADER_TEMPLATE = `
   <h1 class="gnb__title text-title">점심 뭐 먹지</h1>
   <button type="button" class="gnb__button" aria-label="음식점 추가">
-    <img src="../../public/assets/add-button.png" alt="음식점 추가">
+    <img src="https://h0ngju.github.io/javascript-lunch/public/assets/add-button.png" alt="음식점 추가">
   </button>
 `;
 class Header {
@@ -129,27 +129,27 @@ _createHeader = new WeakMap();
 _bindEvent = new WeakMap();
 const CATEGORY = Object.freeze({
   KOREAN: {
-    SRC: "../../public/assets/category-korean.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-korean.png",
     ALT: "한식"
   },
   CHINESE: {
-    SRC: "../../public/assets/category-chinese.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-chinese.png",
     ALT: "중식"
   },
   JAPANESE: {
-    SRC: "../../public/assets/category-japanese.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-japanese.png",
     ALT: "일식"
   },
   WESTERN: {
-    SRC: "../../public/assets/category-western.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-western.png",
     ALT: "양식"
   },
   ASIAN: {
-    SRC: "../../public/assets/category-asian.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-asian.png",
     ALT: "아시안"
   },
   ETC: {
-    SRC: "../../public/assets/category-etc.png",
+    SRC: "https://h0ngju.github.io/javascript-lunch/public/assets/category-etc.png",
     ALT: "기타"
   }
 });
