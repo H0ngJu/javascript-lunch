@@ -139,7 +139,7 @@ class RestaurantIcon {
       return divIcon;
     });
     __privateAdd(this, _getImageSrc, (category) => {
-      const url = `https://h0ngju.github.io/javascript-lunch/public/assets/category-`;
+      const url = `https://h0ngju.github.io/javascript-lunch/assets/category-`;
       const key = CATEGORY[category] ? category : "etc";
       return `${url}${key}.png`;
     });
