@@ -50,7 +50,7 @@ var _appContainer, _Header_instances, createHeader_fn, _bindEvent, _select, _opt
 const HEADER_TEMPLATE = `
   <h1 class="gnb__title text-title">점심 뭐 먹지</h1>
   <button type="button" class="gnb__button" aria-label="음식점 추가">
-    <img src="https://h0ngju.github.io/javascript-lunch/public/assets/add-button.png" alt="음식점 추가">
+    <img src="https://h0ngju.github.io/javascript-lunch/assets/add-button.png" alt="음식점 추가">
   </button>
 `;
 class Header {
