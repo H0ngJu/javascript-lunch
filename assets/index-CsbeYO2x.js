@@ -279,35 +279,35 @@ const ERROR_MESSAGES = Object.freeze({
   INVALID_DESCRIPTION_LENGTH: `가게 설명은 ${SIZE.MAX_LENGTH_OF_DESCRIPTION}자 이내여야 해요`,
   INVALID_LINK_FORMAT: "링크는 프로토콜(https:// or http://)이 접두사로 붙어야 해요."
 });
-const isBlank = (name) => {
+function isBlank(name) {
   if (name.trim() === "") return true;
-};
-const isInvalidLength = (name, length) => {
+}
+function isInvalidLength(name, length) {
   if (name.length > length) return true;
-};
-const validateDescription = (description) => {
+}
+function validateDescription(description) {
   if (isInvalidLength(description, SIZE.MAX_LENGTH_OF_DESCRIPTION)) {
     throw new Error(ERROR_MESSAGES.INVALID_DESCRIPTION_LENGTH);
   }
-};
-const hasNotPrefixProtocol = (input) => {
-  if (!input.match(/https?:\/\/[\w\-\.]+/g)) return true;
-};
-const validateLink = (input) => {
+}
+function hasNotPrefixProtocol(input) {
+  return !input.match(/https?:\/\/[\w\-\.]+/g) ? true : false;
+}
+function validateLink(input) {
   if (!isBlank(input) && hasNotPrefixProtocol(input)) {
     throw new Error(ERROR_MESSAGES.INVALID_LINK_FORMAT);
   }
-};
-const validateName = (name) => {
+}
+function validateName(name) {
   if (isBlank(name)) {
     throw new Error(ERROR_MESSAGES.IS_BLANK);
   }
   if (isInvalidLength(name, SIZE.MAX_LENGTH_OF_NAME)) {
     throw new Error(ERROR_MESSAGES.INVALID_NAME_LENGTH);
   }
-};
+}
 class Restaurant {
-  constructor(name, distance, description, category, link, like) {
+  constructor({ name, distance, description, category, link, like }) {
     __privateAdd(this, _name);
     __privateAdd(this, _distance);
     __privateAdd(this, _description);
@@ -365,9 +365,7 @@ class Restaurants {
     return __privateGet(this, _restaurantList);
   }
   delete(restaurantName) {
-    console.log(restaurantName);
     __privateSet(this, _restaurantList, __privateGet(this, _restaurantList).filter((restaurant) => restaurant.getName() !== restaurantName));
-    console.log(__privateGet(this, _restaurantList));
     return __privateGet(this, _restaurantList);
   }
   updateLike(restaurantName, like) {
@@ -377,17 +375,14 @@ class Restaurants {
     }
     return __privateGet(this, _restaurantList);
   }
-  filter({ category, sorting, header } = {}) {
+  filter(options = {}) {
+    const { category, sorting, header } = options;
     let filteredList = [...__privateGet(this, _restaurantList)];
-    if (category && category !== "") {
-      filteredList = filteredList.filter((restaurant) => {
-        return restaurant.getCategory() === category;
-      });
+    if (category) {
+      filteredList = filteredList.filter((restaurant) => restaurant.getCategory() === category);
     }
     if (header === "자주 가는 음식점") {
-      filteredList = filteredList.filter((restaurant) => {
-        return restaurant.getLike() === true;
-      });
+      filteredList = filteredList.filter((restaurant) => restaurant.getLike() === true);
     }
     if (sorting === "name") {
       filteredList = filteredList.sort((a, b) => a.getName().localeCompare(b.getName()));
@@ -403,35 +398,70 @@ class RestaurantStorage {
     const storedData = localStorage.getItem(__privateGet(this, _STORAGE_KEY));
     if (!storedData) {
       const initialData = [
-        new Restaurant(
-          "피양콩할마니",
-          "10",
-          "평양 출신의 할머니가 수십 년간 운영해온 비지 전문점 피양콩 할마니. 두부를 빼지 않은 되비지를 맛볼 수 있는 곳으로, ‘피양’은 평안도 사투리로 ‘평양’을 의미한다.",
-          "korean",
-          "",
-          true
-        ),
-        new Restaurant(
-          "친친",
-          "5",
-          "Since 2004 편리한 교통과 주차, 그리고 관록만큼 깊은 맛과 정성으로 정통 중식의 세계를 펼쳐갑니다",
-          "chinese",
-          "",
-          true
-        ),
-        new Restaurant(
-          "잇쇼우",
-          "10",
-          "잇쇼우는 정통 자가제면 사누끼 우동이 대표메뉴입니다. 기술은 정성을 이길 수 없다는 신념으로 모든 음식에최선을 다하는 잇쇼우는 고객 한분 한분께 최선을 다하겠습니다",
-          "japanese",
-          "",
-          false
-        ),
-        new Restaurant("이태리키친", "20", "늘 변화를 추구하는 이태리키친입니다.", "western", "", false),
-        new Restaurant("호아빈 삼성점", "15", "푸짐한 양에 국물이 일품인 쌀국수", "asian", "", true),
-        new Restaurant("나아빈 삼성점", "30", "푸짐한 양에 국물이 일품인 쌀국수", "asian", "", false),
-        new Restaurant("가아빈 삼성점", "10", "푸짐한 양에 국물이 일품인 쌀국수", "asian", "", true),
-        new Restaurant("도스타코스 선릉점", "5", "멕시칸 캐주얼 그릴", "etc", "", true)
+        new Restaurant({
+          name: "피양콩할마니",
+          distance: 10,
+          description: "평양 출신의 할머니가 수십 년간 운영해온 비지 전문점 피양콩 할마니. 두부를 빼지 않은 되비지를 맛볼 수 있는 곳으로, ‘피양’은 평안도 사투리로 ‘평양’을 의미한다.",
+          category: "korean",
+          link: "",
+          like: true
+        }),
+        new Restaurant({
+          name: "친친",
+          distance: 5,
+          description: "Since 2004 편리한 교통과 주차, 그리고 관록만큼 깊은 맛과 정성으로 정통 중식의 세계를 펼쳐갑니다",
+          category: "chinese",
+          link: "",
+          like: true
+        }),
+        new Restaurant({
+          name: "잇쇼우",
+          distance: 10,
+          description: "잇쇼우는 정통 자가제면 사누끼 우동이 대표메뉴입니다. 기술은 정성을 이길 수 없다는 신념으로 모든 음식에최선을 다하는 잇쇼우는 고객 한분 한분께 최선을 다하겠습니다",
+          category: "japanese",
+          link: "",
+          like: false
+        }),
+        new Restaurant({
+          name: "이태리키친",
+          distance: 20,
+          description: "늘 변화를 추구하는 이태리키친입니다.",
+          category: "western",
+          link: "",
+          like: false
+        }),
+        new Restaurant({
+          name: "호아빈 삼성점",
+          distance: 15,
+          description: "푸짐한 양에 국물이 일품인 쌀국수",
+          category: "asian",
+          link: "",
+          like: true
+        }),
+        new Restaurant({
+          name: "나아빈 삼성점",
+          distance: 30,
+          description: "푸짐한 양에 국물이 일품인 쌀국수",
+          category: "asian",
+          link: "",
+          like: false
+        }),
+        new Restaurant({
+          name: "가아빈 삼성점",
+          distance: 10,
+          description: "푸짐한 양에 국물이 일품인 쌀국수",
+          category: "asian",
+          link: "",
+          like: true
+        }),
+        new Restaurant({
+          name: "도스타코스 선릉점",
+          distance: 5,
+          description: "멕시칸 캐주얼 그릴",
+          category: "etc",
+          link: "",
+          like: true
+        })
       ];
       const restaurants = new Restaurants(initialData);
       this.saveRestaurants(restaurants);
@@ -440,7 +470,14 @@ class RestaurantStorage {
     try {
       const parsedData = JSON.parse(storedData);
       const restaurantList = parsedData.map(
-        (item) => new Restaurant(item.name, item.distance, item.description, item.category, item.link, item.like)
+        (item) => new Restaurant({
+          name: item.name,
+          distance: Number(item.distance),
+          description: item.description,
+          category: item.category,
+          link: item.link,
+          like: item.like
+        })
       );
       return new Restaurants(restaurantList);
     } catch (error) {
@@ -450,7 +487,6 @@ class RestaurantStorage {
   }
   static saveRestaurants(restaurants) {
     const restaurantArray = restaurants.getAll();
-    console.log(restaurants, "===");
     const serializableData = restaurantArray.map((restaurant) => ({
       name: restaurant.getName(),
       distance: restaurant.getDistance(),
@@ -463,21 +499,30 @@ class RestaurantStorage {
   }
   static addRestaurant(restaurant) {
     const restaurants = this.getRestaurants();
-    restaurants.add(restaurant);
-    this.saveRestaurants(restaurants);
-    return restaurants;
+    if (restaurants instanceof Restaurants) {
+      restaurants.add(restaurant);
+      this.saveRestaurants(restaurants);
+      return restaurants;
+    }
+    return [];
   }
   static deleteRestaurant(restaurantName) {
     const restaurants = this.getRestaurants();
-    restaurants.delete(restaurantName);
-    this.saveRestaurants(restaurants);
-    return restaurants;
+    if (restaurants instanceof Restaurants) {
+      restaurants.delete(restaurantName);
+      this.saveRestaurants(restaurants);
+      return restaurants;
+    }
+    return [];
   }
   static updateRestaurantLike(restaurantName, like) {
     const restaurants = this.getRestaurants();
-    restaurants.updateLike(restaurantName, like);
-    this.saveRestaurants(restaurants);
-    return restaurants;
+    if (restaurants instanceof Restaurants) {
+      restaurants.updateLike(restaurantName, like);
+      this.saveRestaurants(restaurants);
+      return restaurants;
+    }
+    return [];
   }
 }
 _STORAGE_KEY = new WeakMap();
@@ -655,11 +700,11 @@ const DISTANCE = Object.freeze({
   20: "20분 내",
   30: "30분 내"
 });
-const validateDropDown = (title, input) => {
+function validateDropDown(title, input) {
   if (isBlank(input)) {
     throw new Error(ERROR_MESSAGES.NOT_SELECTED(title));
   }
-};
+}
 class InputText {
   constructor(name, required = false) {
     __privateAdd(this, _input);
@@ -843,14 +888,14 @@ createAddModal_fn = function() {
 };
 addNewRestaurant_fn = function() {
   const formData = Object.fromEntries(new FormData(__privateGet(this, _modalForm)));
-  const newRestaurant = new Restaurant(
-    formData.name,
-    formData.distance,
-    formData.description,
-    formData.category,
-    formData.link,
-    false
-  );
+  const newRestaurant = new Restaurant({
+    name: formData.name,
+    distance: Number(formData.distance),
+    description: formData.description,
+    category: formData.category,
+    link: formData.link,
+    like: false
+  });
   __privateGet(this, _restaurantList2).addRestaurant(newRestaurant);
 };
 validateInputs_fn = function() {
