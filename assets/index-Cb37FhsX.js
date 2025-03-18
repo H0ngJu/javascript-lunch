@@ -9,7 +9,7 @@ var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read fr
 var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
-var _appContainer, _Header_instances, createHeader_fn, _bindEvent, _select, _option, _InputDropDown_instances, createInputDropDown_fn, _createRestaurantIcon, _getImageSrc, _createRestaurantInfo, _star, _like, _onRestaurantUpdate, _Star_instances, createStar_fn, toggle_fn, _bindEvent2, _restaurantElement, _onRestaurantUpdate2, _detailModal, _restaurant, _createRestaurantItem, _bindEvent3, _name, _distance, _description, _category, _link, _like2, _restaurantList, _STORAGE_KEY, _restaurantListContainer, _restaurants, _onRestaurantUpdate3, _detailModal2, _restaurantData, _currentCategory, _currentSorting, _currentHeader, _RestaurantList_instances, createRestaurantList_fn, renderRestaurantList_fn, _crerateButton, _inputContainer, _inputComponent, _Input_instances, createInput_fn, _appContainer2, _modal, _input, _textarea, _cancelButton, _addButton, _divCategory, _divName, _divDistance, _divDescription, _divLink, _modalForm, _restaurantList2, _AddRestaurantModal_instances, init_fn, resetForm_fn, createButton_fn, appendChildToModalForm_fn, createAddModal_fn, addNewRestaurant_fn, validateInputs_fn, _bindAddButtonEvent, _bindCancleButtonEvent, _bindModalBackDropEvent, _bindESCEvent, _bindEvent4, _likeHeaderContainer, _leftTitle, _rightTitle, _currentHeader2, _LikeHeader_instances, createLikeHeader_fn, _bindEvent5, _cancelButton2, _deleteButton, _star2, _currentRestaurant, _restaurantList3, _DetailModal_instances, init_fn2, createAddModal_fn2, createButton_fn2, setRestaurantStyle_fn, addRestaurantLink_fn, _bindDeleteButtonEvent, _bindCancleButtonEvent2, _bindModalBackDropEvent2, _bindESCEvent2, clearModalContent_fn, _bindEvent6, _categoryFilter, _sortingFilter, _currentCategory2, _currentSorting2, _currentHeader3, _restaurantList4, _likeHeader, _App_instances, init_fn3, createAppContainer_fn, createFilter_fn, _onChangedCategory, _onChangedSorting, _onChangedLikeHeader, _bindEvent7, _modalClickHandler, handleRestaurantUpdate_fn, initAppUI_fn;
+var _appContainer, _Header_instances, createHeader_fn, _bindEvent, _createRestaurantIcon, _getImageSrc, _createRestaurantInfo, _star, _isLiked, _onRestaurantUpdate, _Star_instances, createStar_fn, toggle_fn, _bindEvent2, _restaurantElement, _onRestaurantUpdate2, _restaurant, _onClickItem, _createRestaurantItem, _bindEvent3, _name, _distance, _description, _category, _link, _isLiked2, _likeHeaderContainer, _leftTitle, _rightTitle, _currentHeader, _LikeHeader_instances, createLikeHeader_fn, _bindEvent4, _restaurantList, _STORAGE_KEY, _restaurantListContainer, _onRestaurantUpdate3, _detailModal, _restaurantData, _restaurants, _currentCategory, _currentSorting, _currentHeader2, _onClickItem2, _RestaurantList_instances, createRestaurantList_fn, renderRestaurantList_fn, _crerateButton, _inputContainer, _inputComponent, _Input_instances, createInput_fn, _createFormItemLabel, _select, _option, _InputDropDown_instances, createInputDropDown_fn, _appContainer2, _modal, _input, _textarea, _cancelButton, _addButton, _divCategory, _divName, _divDistance, _divDescription, _divLink, _modalForm, _onClickAddButton, _AddRestaurantModal_instances, init_fn, resetForm_fn, createButton_fn, appendChildToModalForm_fn, createAddModal_fn, addNewRestaurant_fn, validateInputs_fn, _bindAddButtonEvent, _bindCancleButtonEvent, _bindModalBackDropEvent, _bindESCEvent, _bindEvent5, _cancelButton2, _deleteButton, _star2, _currentRestaurant, _onClickDeleteButton, _DetailModal_instances, init_fn2, createAddModal_fn2, createButton_fn2, setRestaurantStyle_fn, addRestaurantLink_fn, _bindDeleteButtonEvent, _bindCancleButtonEvent2, _bindModalBackDropEvent2, _bindESCEvent2, clearModalContent_fn, _bindEvent6, _categoryFilter, _sortingFilter, _currentCategory2, _currentSorting2, _currentHeader3, _restaurantList2, _$likeHeader, _App_instances, init_fn3, createAppContainer_fn, createFilter_fn, _bindCategoryEvent, _bindSortingEvent, _bindLikeHeaderEvent, _bindEvent7, _modalClickHandler, handleRestaurantUpdate_fn, _handleDeleteRestaurant, _handleAddRestaurant, _handleDetailModal, initAppUI_fn;
 (function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -75,50 +75,6 @@ createHeader_fn = function() {
   __privateGet(this, _appContainer).prepend(header);
 };
 _bindEvent = new WeakMap();
-const createFormItemLabel = (type, title) => {
-  const label = document.createElement("label");
-  label.setAttribute("for", type);
-  label.classList.add("text-caption");
-  label.textContent = title;
-  return label;
-};
-const OPTION_TEMPLATE = (value, innerValue) => {
-  return `<option value="${innerValue}">${value}</option>`;
-};
-class InputDropDown {
-  constructor({ name, id, required = false, option, addDefaultOption = false, optionDefault = "선택해주세요" }) {
-    __privateAdd(this, _InputDropDown_instances);
-    __privateAdd(this, _select);
-    __privateAdd(this, _option);
-    __privateSet(this, _option, option);
-    __privateSet(this, _select, __privateMethod(this, _InputDropDown_instances, createInputDropDown_fn).call(this, name, id, required, addDefaultOption, optionDefault));
-  }
-  reset() {
-    __privateGet(this, _select).selectedIndex = 0;
-  }
-  getElement() {
-    return __privateGet(this, _select);
-  }
-}
-_select = new WeakMap();
-_option = new WeakMap();
-_InputDropDown_instances = new WeakSet();
-createInputDropDown_fn = function(name, id, required, addDefaultOption, optionDefault) {
-  const select = document.createElement("select");
-  select.setAttribute("name", name);
-  select.setAttribute("id", id);
-  if (required) select.required = true;
-  if (addDefaultOption) select.insertAdjacentHTML("beforeend", OPTION_TEMPLATE(optionDefault, ""));
-  const sortedOptions = Object.entries(__privateGet(this, _option)).sort(([keyA], [keyB]) => {
-    if (keyA === "") return -1;
-    if (keyB === "") return 1;
-    return Number(keyA) - Number(keyB);
-  });
-  sortedOptions.forEach(([key, value]) => {
-    select.insertAdjacentHTML("beforeend", OPTION_TEMPLATE(value, key));
-  });
-  return select;
-};
 const CATEGORY = Object.freeze({
   korean: "한식",
   chinese: "중식",
@@ -174,14 +130,14 @@ class Star {
   constructor(restaurant, onRestaurantUpdate) {
     __privateAdd(this, _Star_instances);
     __privateAdd(this, _star);
-    __privateAdd(this, _like);
+    __privateAdd(this, _isLiked);
     __privateAdd(this, _onRestaurantUpdate);
     __publicField(this, "restaurant");
     __privateAdd(this, _bindEvent2, () => {
       __privateGet(this, _star).addEventListener("click", () => {
-        __privateSet(this, _like, !__privateGet(this, _like));
-        this.restaurant.setLike(__privateGet(this, _like));
-        __privateMethod(this, _Star_instances, toggle_fn).call(this, __privateGet(this, _like));
+        __privateSet(this, _isLiked, !__privateGet(this, _isLiked));
+        this.restaurant.setIsLiked(__privateGet(this, _isLiked));
+        __privateMethod(this, _Star_instances, toggle_fn).call(this, __privateGet(this, _isLiked));
         if (__privateGet(this, _onRestaurantUpdate)) {
           __privateGet(this, _onRestaurantUpdate).call(this);
         }
@@ -189,7 +145,7 @@ class Star {
     });
     this.restaurant = restaurant;
     __privateSet(this, _onRestaurantUpdate, onRestaurantUpdate);
-    __privateSet(this, _like, restaurant.getLike());
+    __privateSet(this, _isLiked, restaurant.getIsLiked());
     __privateMethod(this, _Star_instances, createStar_fn).call(this);
     __privateGet(this, _bindEvent2).call(this);
   }
@@ -198,17 +154,17 @@ class Star {
   }
 }
 _star = new WeakMap();
-_like = new WeakMap();
+_isLiked = new WeakMap();
 _onRestaurantUpdate = new WeakMap();
 _Star_instances = new WeakSet();
 createStar_fn = function() {
   const star = document.createElement("button");
   star.classList.add("star-icon");
-  __privateGet(this, _like) ? star.classList.add("like") : star.classList.add("unlike");
+  __privateGet(this, _isLiked) ? star.classList.add("like") : star.classList.add("unlike");
   __privateSet(this, _star, star);
 };
-toggle_fn = function(like) {
-  if (like) {
+toggle_fn = function(isLiked) {
+  if (isLiked) {
     __privateGet(this, _star).classList.remove("unlike");
     __privateGet(this, _star).classList.add("like");
   } else {
@@ -218,11 +174,11 @@ toggle_fn = function(like) {
 };
 _bindEvent2 = new WeakMap();
 const _RestaurantItem = class _RestaurantItem {
-  constructor(restaurant, onRestaurantUpdate, detailModal) {
+  constructor(restaurant, onRestaurantUpdate, onClickItem) {
     __privateAdd(this, _restaurantElement);
     __privateAdd(this, _onRestaurantUpdate2);
-    __privateAdd(this, _detailModal);
     __privateAdd(this, _restaurant);
+    __privateAdd(this, _onClickItem);
     __privateAdd(this, _createRestaurantItem, (restaurant) => {
       const li = document.createElement("li");
       const icon = new RestaurantIcon(restaurant.getCategory());
@@ -242,14 +198,13 @@ const _RestaurantItem = class _RestaurantItem {
         const clonedRestaurant = new _RestaurantItem(
           __privateGet(this, _restaurant),
           __privateGet(this, _onRestaurantUpdate2),
-          __privateGet(this, _detailModal)
+          __privateGet(this, _onClickItem)
         ).getElement();
-        __privateGet(this, _detailModal).addRestaurant(clonedRestaurant, __privateGet(this, _restaurant));
-        __privateGet(this, _detailModal).openModal();
+        __privateGet(this, _onClickItem).call(this, clonedRestaurant, __privateGet(this, _restaurant));
       });
     });
     __privateSet(this, _onRestaurantUpdate2, onRestaurantUpdate);
-    __privateSet(this, _detailModal, detailModal);
+    __privateSet(this, _onClickItem, onClickItem);
     __privateSet(this, _restaurant, restaurant);
     __privateGet(this, _createRestaurantItem).call(this, restaurant);
     __privateGet(this, _bindEvent3).call(this, __privateGet(this, _restaurantElement));
@@ -260,8 +215,8 @@ const _RestaurantItem = class _RestaurantItem {
 };
 _restaurantElement = new WeakMap();
 _onRestaurantUpdate2 = new WeakMap();
-_detailModal = new WeakMap();
 _restaurant = new WeakMap();
+_onClickItem = new WeakMap();
 _createRestaurantItem = new WeakMap();
 _bindEvent3 = new WeakMap();
 let RestaurantItem = _RestaurantItem;
@@ -286,7 +241,7 @@ function isInvalidLength(name, length) {
   if (name.length > length) return true;
 }
 function validateDescription(description) {
-  if (isInvalidLength(description, SIZE.MAX_LENGTH_OF_DESCRIPTION)) {
+  if (description && isInvalidLength(description, SIZE.MAX_LENGTH_OF_DESCRIPTION)) {
     throw new Error(ERROR_MESSAGES.INVALID_DESCRIPTION_LENGTH);
   }
 }
@@ -294,7 +249,7 @@ function hasNotPrefixProtocol(input) {
   return !input.match(/https?:\/\/[\w\-\.]+/g) ? true : false;
 }
 function validateLink(input) {
-  if (!isBlank(input) && hasNotPrefixProtocol(input)) {
+  if (input && !isBlank(input) && hasNotPrefixProtocol(input)) {
     throw new Error(ERROR_MESSAGES.INVALID_LINK_FORMAT);
   }
 }
@@ -307,13 +262,13 @@ function validateName(name) {
   }
 }
 class Restaurant {
-  constructor({ name, distance, description, category, link, like }) {
+  constructor({ name, distance, description = "", category, link = "", isLiked }) {
     __privateAdd(this, _name);
     __privateAdd(this, _distance);
     __privateAdd(this, _description);
     __privateAdd(this, _category);
     __privateAdd(this, _link);
-    __privateAdd(this, _like2);
+    __privateAdd(this, _isLiked2);
     validateName(name);
     validateDescription(description);
     validateLink(link);
@@ -322,7 +277,7 @@ class Restaurant {
     __privateSet(this, _description, description);
     __privateSet(this, _category, category);
     __privateSet(this, _link, link);
-    __privateSet(this, _like2, like);
+    __privateSet(this, _isLiked2, isLiked);
   }
   getName() {
     return String(__privateGet(this, _name));
@@ -339,11 +294,11 @@ class Restaurant {
   getLink() {
     return String(__privateGet(this, _link));
   }
-  getLike() {
-    return __privateGet(this, _like2);
+  getIsLiked() {
+    return __privateGet(this, _isLiked2);
   }
-  setLike(like) {
-    __privateSet(this, _like2, like);
+  setIsLiked(isLiked) {
+    __privateSet(this, _isLiked2, isLiked);
   }
 }
 _name = new WeakMap();
@@ -351,7 +306,123 @@ _distance = new WeakMap();
 _description = new WeakMap();
 _category = new WeakMap();
 _link = new WeakMap();
-_like2 = new WeakMap();
+_isLiked2 = new WeakMap();
+const DummyData = [
+  new Restaurant({
+    name: "피양콩할마니",
+    distance: 10,
+    description: "평양 출신의 할머니가 수십 년간 운영해온 비지 전문점 피양콩 할마니. 두부를 빼지 않은 되비지를 맛볼 수 있는 곳으로, ‘피양’은 평안도 사투리로 ‘평양’을 의미한다.",
+    category: "korean",
+    isLiked: true
+  }),
+  new Restaurant({
+    name: "친친",
+    distance: 5,
+    description: "Since 2004 편리한 교통과 주차, 그리고 관록만큼 깊은 맛과 정성으로 정통 중식의 세계를 펼쳐갑니다",
+    category: "chinese",
+    isLiked: true
+  }),
+  new Restaurant({
+    name: "잇쇼우",
+    distance: 10,
+    description: "잇쇼우는 정통 자가제면 사누끼 우동이 대표메뉴입니다. 기술은 정성을 이길 수 없다는 신념으로 모든 음식에최선을 다하는 잇쇼우는 고객 한분 한분께 최선을 다하겠습니다",
+    category: "japanese",
+    isLiked: false
+  }),
+  new Restaurant({
+    name: "이태리키친",
+    distance: 20,
+    description: "늘 변화를 추구하는 이태리키친입니다.",
+    category: "western",
+    isLiked: false
+  }),
+  new Restaurant({
+    name: "호아빈 삼성점",
+    distance: 15,
+    description: "푸짐한 양에 국물이 일품인 쌀국수",
+    category: "asian",
+    isLiked: true
+  }),
+  new Restaurant({
+    name: "나아빈 삼성점",
+    distance: 30,
+    category: "asian",
+    isLiked: false
+  }),
+  new Restaurant({
+    name: "가아빈 삼성점",
+    distance: 10,
+    description: "푸짐한 양에 국물이 일품인 쌀국수",
+    category: "asian",
+    isLiked: true
+  }),
+  new Restaurant({
+    name: "도스타코스 선릉점",
+    distance: 5,
+    description: "멕시칸 캐주얼 그릴",
+    category: "etc",
+    link: "https://g.co/kgs/ueyGBPy",
+    isLiked: true
+  })
+];
+const LIKE_HEADER_STATE = Object.freeze({
+  ALL: "ALL",
+  LIKE: "LIKE"
+});
+const LIKE_HEADER_TITLE = Object.freeze({
+  [LIKE_HEADER_STATE.ALL]: "모든 음식점",
+  [LIKE_HEADER_STATE.LIKE]: "자주 가는 음식점"
+});
+class LikeHeader {
+  constructor(likeHeaderContainer) {
+    __privateAdd(this, _LikeHeader_instances);
+    __privateAdd(this, _likeHeaderContainer);
+    __privateAdd(this, _leftTitle);
+    __privateAdd(this, _rightTitle);
+    __privateAdd(this, _currentHeader);
+    __privateAdd(this, _bindEvent4, () => {
+      __privateGet(this, _leftTitle).addEventListener("click", () => {
+        __privateGet(this, _leftTitle).classList.add("selected");
+        __privateGet(this, _rightTitle).classList.remove("selected");
+        __privateSet(this, _currentHeader, LIKE_HEADER_STATE.ALL);
+      });
+      __privateGet(this, _rightTitle).addEventListener("click", () => {
+        __privateGet(this, _leftTitle).classList.remove("selected");
+        __privateGet(this, _rightTitle).classList.add("selected");
+        __privateSet(this, _currentHeader, LIKE_HEADER_STATE.LIKE);
+      });
+    });
+    __privateSet(this, _likeHeaderContainer, likeHeaderContainer);
+    __privateSet(this, _currentHeader, LIKE_HEADER_STATE.ALL);
+    __privateMethod(this, _LikeHeader_instances, createLikeHeader_fn).call(this);
+    __privateGet(this, _bindEvent4).call(this);
+  }
+  getElement() {
+    return __privateGet(this, _likeHeaderContainer);
+  }
+  getCurrentHeader() {
+    return __privateGet(this, _currentHeader);
+  }
+}
+_likeHeaderContainer = new WeakMap();
+_leftTitle = new WeakMap();
+_rightTitle = new WeakMap();
+_currentHeader = new WeakMap();
+_LikeHeader_instances = new WeakSet();
+createLikeHeader_fn = function() {
+  const leftTitleDiv = document.createElement("button");
+  leftTitleDiv.classList.add("selected");
+  leftTitleDiv.classList.add("all-restaurants");
+  const rightTitleDiv = document.createElement("button");
+  rightTitleDiv.classList.add("like-restaurants");
+  leftTitleDiv.innerText = LIKE_HEADER_TITLE[LIKE_HEADER_STATE.ALL];
+  rightTitleDiv.innerText = LIKE_HEADER_TITLE[LIKE_HEADER_STATE.LIKE];
+  __privateSet(this, _leftTitle, leftTitleDiv);
+  __privateSet(this, _rightTitle, rightTitleDiv);
+  __privateGet(this, _likeHeaderContainer).appendChild(leftTitleDiv);
+  __privateGet(this, _likeHeaderContainer).appendChild(rightTitleDiv);
+};
+_bindEvent4 = new WeakMap();
 class Restaurants {
   constructor(initialRestaurants = []) {
     __privateAdd(this, _restaurantList);
@@ -362,108 +433,42 @@ class Restaurants {
   }
   add(restaurant) {
     __privateGet(this, _restaurantList).push(restaurant);
-    return __privateGet(this, _restaurantList);
   }
   delete(restaurantName) {
     __privateSet(this, _restaurantList, __privateGet(this, _restaurantList).filter((restaurant) => restaurant.getName() !== restaurantName));
-    return __privateGet(this, _restaurantList);
   }
-  updateLike(restaurantName, like) {
+  updateIsLiked(restaurantName, isLiked) {
     const restaurant = __privateGet(this, _restaurantList).find((restaurant2) => restaurant2.getName() === restaurantName);
     if (restaurant) {
-      restaurant.setLike(like);
+      restaurant.setIsLiked(isLiked);
     }
-    return __privateGet(this, _restaurantList);
   }
-  filter(options = {}) {
+  filterAndSort(options = {}) {
     const { category, sorting, header } = options;
     let filteredList = [...__privateGet(this, _restaurantList)];
-    if (category) {
-      filteredList = filteredList.filter((restaurant) => restaurant.getCategory() === category);
-    }
-    if (header === "자주 가는 음식점") {
-      filteredList = filteredList.filter((restaurant) => restaurant.getLike() === true);
-    }
-    if (sorting === "name") {
-      filteredList = filteredList.sort((a, b) => a.getName().localeCompare(b.getName()));
-    } else if (sorting === "distance") {
+    filteredList = filteredList.filter((restaurant) => {
+      if (category && restaurant.getCategory() !== category) return false;
+      if (header === LIKE_HEADER_STATE.LIKE && restaurant.getIsLiked() !== true) return false;
+      return true;
+    });
+    if (sorting === "name") filteredList = filteredList.sort((a, b) => a.getName().localeCompare(b.getName()));
+    if (sorting === "distance")
       filteredList = filteredList.sort((a, b) => Number(a.getDistance()) - Number(b.getDistance()));
-    }
     return filteredList;
   }
 }
 _restaurantList = new WeakMap();
+const RESTAURANT_STORAGE_ERROR = Object.freeze({
+  FAILED_LOAD_FROM_LOCAL_STORAGE: "음식점 리스트 데이터를 불러오는데 실패하였습니다.",
+  FAILED_TO_SAVE_RESTAURANT: "음식점을 추가에 실패하였습니다.",
+  FAILED_TO_DELET_RESTAURANT: "음식점을 삭제하는데 실패하였습니다.",
+  FAILED_TO_UPDATE_IS_LIKE: "음식점의 즐겨찾기를 업데이트할 수 없습니다."
+});
 class RestaurantStorage {
   static getRestaurants() {
     const storedData = localStorage.getItem(__privateGet(this, _STORAGE_KEY));
     if (!storedData) {
-      const initialData = [
-        new Restaurant({
-          name: "피양콩할마니",
-          distance: 10,
-          description: "평양 출신의 할머니가 수십 년간 운영해온 비지 전문점 피양콩 할마니. 두부를 빼지 않은 되비지를 맛볼 수 있는 곳으로, ‘피양’은 평안도 사투리로 ‘평양’을 의미한다.",
-          category: "korean",
-          link: "",
-          like: true
-        }),
-        new Restaurant({
-          name: "친친",
-          distance: 5,
-          description: "Since 2004 편리한 교통과 주차, 그리고 관록만큼 깊은 맛과 정성으로 정통 중식의 세계를 펼쳐갑니다",
-          category: "chinese",
-          link: "",
-          like: true
-        }),
-        new Restaurant({
-          name: "잇쇼우",
-          distance: 10,
-          description: "잇쇼우는 정통 자가제면 사누끼 우동이 대표메뉴입니다. 기술은 정성을 이길 수 없다는 신념으로 모든 음식에최선을 다하는 잇쇼우는 고객 한분 한분께 최선을 다하겠습니다",
-          category: "japanese",
-          link: "",
-          like: false
-        }),
-        new Restaurant({
-          name: "이태리키친",
-          distance: 20,
-          description: "늘 변화를 추구하는 이태리키친입니다.",
-          category: "western",
-          link: "",
-          like: false
-        }),
-        new Restaurant({
-          name: "호아빈 삼성점",
-          distance: 15,
-          description: "푸짐한 양에 국물이 일품인 쌀국수",
-          category: "asian",
-          link: "",
-          like: true
-        }),
-        new Restaurant({
-          name: "나아빈 삼성점",
-          distance: 30,
-          description: "푸짐한 양에 국물이 일품인 쌀국수",
-          category: "asian",
-          link: "",
-          like: false
-        }),
-        new Restaurant({
-          name: "가아빈 삼성점",
-          distance: 10,
-          description: "푸짐한 양에 국물이 일품인 쌀국수",
-          category: "asian",
-          link: "",
-          like: true
-        }),
-        new Restaurant({
-          name: "도스타코스 선릉점",
-          distance: 5,
-          description: "멕시칸 캐주얼 그릴",
-          category: "etc",
-          link: "",
-          like: true
-        })
-      ];
-      const restaurants = new Restaurants(initialData);
+      const restaurants = new Restaurants(DummyData);
       this.saveRestaurants(restaurants);
       return restaurants;
     }
@@ -476,13 +481,12 @@ class RestaurantStorage {
           description: item.description,
           category: item.category,
           link: item.link,
-          like: item.like
+          isLiked: item.isLiked
         })
       );
       return new Restaurants(restaurantList);
     } catch (error) {
-      alert(error.message);
-      return [];
+      throw new Error(RESTAURANT_STORAGE_ERROR.FAILED_LOAD_FROM_LOCAL_STORAGE);
     }
   }
   static saveRestaurants(restaurants) {
@@ -493,7 +497,7 @@ class RestaurantStorage {
       description: restaurant.getDescription(),
       category: restaurant.getCategory(),
       link: restaurant.getLink(),
-      like: restaurant.getLike()
+      isLiked: restaurant.getIsLiked()
     }));
     localStorage.setItem(__privateGet(this, _STORAGE_KEY), JSON.stringify(serializableData));
   }
@@ -503,8 +507,9 @@ class RestaurantStorage {
       restaurants.add(restaurant);
       this.saveRestaurants(restaurants);
       return restaurants;
+    } else {
+      throw new Error(RESTAURANT_STORAGE_ERROR.FAILED_TO_SAVE_RESTAURANT);
     }
-    return [];
   }
   static deleteRestaurant(restaurantName) {
     const restaurants = this.getRestaurants();
@@ -512,53 +517,50 @@ class RestaurantStorage {
       restaurants.delete(restaurantName);
       this.saveRestaurants(restaurants);
       return restaurants;
+    } else {
+      throw new Error(RESTAURANT_STORAGE_ERROR.FAILED_TO_DELET_RESTAURANT);
     }
-    return [];
   }
-  static updateRestaurantLike(restaurantName, like) {
+  static updateRestaurantIsLiked(restaurantName, isLiked) {
     const restaurants = this.getRestaurants();
     if (restaurants instanceof Restaurants) {
-      restaurants.updateLike(restaurantName, like);
+      restaurants.updateIsLiked(restaurantName, isLiked);
       this.saveRestaurants(restaurants);
       return restaurants;
+    } else {
+      throw new Error(RESTAURANT_STORAGE_ERROR.FAILED_TO_UPDATE_IS_LIKE);
     }
-    return [];
   }
 }
 _STORAGE_KEY = new WeakMap();
 __privateAdd(RestaurantStorage, _STORAGE_KEY, "restaurants");
 class RestaurantList {
-  constructor(restaurantListContainer, onRestaurantUpdate, detailModal) {
+  constructor(restaurantListContainer, onRestaurantUpdate, onClickItem) {
     __privateAdd(this, _RestaurantList_instances);
     __privateAdd(this, _restaurantListContainer);
     // 레스토랑 리스트 컨테이너
-    __privateAdd(this, _restaurants);
     __privateAdd(this, _onRestaurantUpdate3);
     // 레스토랑 리스트 리로드 함수
-    __privateAdd(this, _detailModal2);
+    __privateAdd(this, _detailModal);
     // 레스토랑 상세정보 모달
     __privateAdd(this, _restaurantData);
     // localStorage 레스토랑 데이터
-    __privateAdd(this, _currentCategory, "");
-    __privateAdd(this, _currentSorting, "name");
-    __privateAdd(this, _currentHeader, "모든 음식점");
+    __privateAdd(this, _restaurants);
+    __privateAdd(this, _currentCategory);
+    __privateAdd(this, _currentSorting);
+    __privateAdd(this, _currentHeader2);
+    __privateAdd(this, _onClickItem2);
     __privateSet(this, _restaurantListContainer, restaurantListContainer);
     __privateSet(this, _onRestaurantUpdate3, onRestaurantUpdate);
-    __privateSet(this, _detailModal2, detailModal);
+    __privateSet(this, _onClickItem2, onClickItem);
     __privateSet(this, _restaurants, RestaurantStorage.getRestaurants());
     __privateMethod(this, _RestaurantList_instances, renderRestaurantList_fn).call(this);
   }
   sortRestaurantList(category, sorting, currentHeader) {
     __privateSet(this, _currentCategory, category);
     __privateSet(this, _currentSorting, sorting);
-    __privateSet(this, _currentHeader, currentHeader);
-    const filteredList = __privateGet(this, _restaurants).filter({
-      category: __privateGet(this, _currentCategory),
-      sorting: __privateGet(this, _currentSorting),
-      header: __privateGet(this, _currentHeader)
-    });
-    __privateMethod(this, _RestaurantList_instances, createRestaurantList_fn).call(this, filteredList);
-    return filteredList;
+    __privateSet(this, _currentHeader2, currentHeader);
+    __privateMethod(this, _RestaurantList_instances, renderRestaurantList_fn).call(this);
   }
   addRestaurant(restaurant) {
     __privateSet(this, _restaurantData, RestaurantStorage.addRestaurant(restaurant));
@@ -570,39 +572,36 @@ class RestaurantList {
     __privateSet(this, _restaurants, __privateGet(this, _restaurantData));
     __privateMethod(this, _RestaurantList_instances, renderRestaurantList_fn).call(this);
   }
-  updateRestaurantLike(restaurantName, like) {
-    __privateSet(this, _restaurantData, RestaurantStorage.updateRestaurantLike(restaurantName, like));
+  updateRestaurantIsLiked(restaurantName, isLiked) {
+    __privateSet(this, _restaurantData, RestaurantStorage.updateRestaurantIsLiked(restaurantName, isLiked));
     __privateMethod(this, _RestaurantList_instances, renderRestaurantList_fn).call(this);
   }
   getRestaurantData() {
     return __privateGet(this, _restaurants).getAll();
   }
-  setModal(detailModal) {
-    __privateSet(this, _detailModal2, detailModal);
-    __privateMethod(this, _RestaurantList_instances, renderRestaurantList_fn).call(this);
-  }
 }
 _restaurantListContainer = new WeakMap();
-_restaurants = new WeakMap();
 _onRestaurantUpdate3 = new WeakMap();
-_detailModal2 = new WeakMap();
+_detailModal = new WeakMap();
 _restaurantData = new WeakMap();
+_restaurants = new WeakMap();
 _currentCategory = new WeakMap();
 _currentSorting = new WeakMap();
-_currentHeader = new WeakMap();
+_currentHeader2 = new WeakMap();
+_onClickItem2 = new WeakMap();
 _RestaurantList_instances = new WeakSet();
 createRestaurantList_fn = function(restaurantList) {
   __privateGet(this, _restaurantListContainer).innerHTML = "";
   restaurantList.forEach((restaurant) => {
-    const restaurantItem = new RestaurantItem(restaurant, __privateGet(this, _onRestaurantUpdate3), __privateGet(this, _detailModal2)).getElement();
+    const restaurantItem = new RestaurantItem(restaurant, __privateGet(this, _onRestaurantUpdate3), __privateGet(this, _onClickItem2)).getElement();
     __privateGet(this, _restaurantListContainer).appendChild(restaurantItem);
   });
 };
 renderRestaurantList_fn = function() {
-  const restaurantList = __privateGet(this, _restaurants).filter({
+  const restaurantList = __privateGet(this, _restaurants).filterAndSort({
     category: __privateGet(this, _currentCategory),
     sorting: __privateGet(this, _currentSorting),
-    header: __privateGet(this, _currentHeader)
+    header: __privateGet(this, _currentHeader2)
   });
   __privateMethod(this, _RestaurantList_instances, createRestaurantList_fn).call(this, restaurantList);
 };
@@ -628,6 +627,13 @@ class Input {
     __privateAdd(this, _Input_instances);
     __privateAdd(this, _inputContainer);
     __privateAdd(this, _inputComponent);
+    __privateAdd(this, _createFormItemLabel, (type, title) => {
+      const label = document.createElement("label");
+      label.setAttribute("for", type);
+      label.classList.add("text-caption");
+      label.textContent = title;
+      return label;
+    });
     __privateSet(this, _inputComponent, inputComponent);
     __privateSet(this, _inputContainer, __privateMethod(this, _Input_instances, createInput_fn).call(this, name, title, required, spanText, inputComponent));
   }
@@ -645,7 +651,7 @@ createInput_fn = function(name, title, required, spanText, inputComponent) {
   const formItem = document.createElement("div");
   formItem.classList.add("form-item");
   if (required) formItem.classList.add("form-item--required");
-  const label = createFormItemLabel(name, title);
+  const label = __privateGet(this, _createFormItemLabel).call(this, name, title);
   formItem.appendChild(label);
   formItem.appendChild(inputComponent.getElement());
   if (spanText) {
@@ -655,6 +661,39 @@ createInput_fn = function(name, title, required, spanText, inputComponent) {
     formItem.appendChild(span);
   }
   return formItem;
+};
+_createFormItemLabel = new WeakMap();
+const OPTION_TEMPLATE = (value, innerValue) => {
+  return `<option value="${innerValue}">${value}</option>`;
+};
+class InputDropDown {
+  constructor({ name, id, required = false, option, optionDefault }) {
+    __privateAdd(this, _InputDropDown_instances);
+    __privateAdd(this, _select);
+    __privateAdd(this, _option);
+    __privateSet(this, _option, option);
+    __privateSet(this, _select, __privateMethod(this, _InputDropDown_instances, createInputDropDown_fn).call(this, name, id, required, optionDefault));
+  }
+  reset() {
+    __privateGet(this, _select).selectedIndex = 0;
+  }
+  getElement() {
+    return __privateGet(this, _select);
+  }
+}
+_select = new WeakMap();
+_option = new WeakMap();
+_InputDropDown_instances = new WeakSet();
+createInputDropDown_fn = function(name, id, required, optionDefault) {
+  const select = document.createElement("select");
+  select.setAttribute("name", name);
+  select.setAttribute("id", id);
+  if (required) select.required = true;
+  if (optionDefault != null) select.insertAdjacentHTML("beforeend", OPTION_TEMPLATE(optionDefault, ""));
+  Object.entries(__privateGet(this, _option)).forEach(([key, value]) => {
+    select.insertAdjacentHTML("beforeend", OPTION_TEMPLATE(value, key));
+  });
+  return select;
 };
 const MODAL_TEMPLATE = `<div class="modal-backdrop"></div>
           <div class="modal-container"></div>`;
@@ -706,7 +745,7 @@ function validateDropDown(title, input) {
   }
 }
 class InputText {
-  constructor(name, required = false) {
+  constructor({ name, required = false }) {
     __privateAdd(this, _input);
     __privateSet(this, _input, document.createElement("input"));
     __privateGet(this, _input).setAttribute("type", "text");
@@ -723,7 +762,7 @@ class InputText {
 }
 _input = new WeakMap();
 class InputTextArea {
-  constructor(name, required = false, cols = 30, rows = 5) {
+  constructor({ name, required = false, cols = 30, rows = 5 }) {
     __privateAdd(this, _textarea);
     __privateSet(this, _textarea, document.createElement("textarea"));
     __privateGet(this, _textarea).setAttribute("name", name);
@@ -741,7 +780,7 @@ class InputTextArea {
 }
 _textarea = new WeakMap();
 class AddRestaurantModal extends Modal {
-  constructor(appContainer, restaurantList) {
+  constructor(appContainer, onClickAddButton) {
     super(appContainer);
     __privateAdd(this, _AddRestaurantModal_instances);
     __privateAdd(this, _cancelButton);
@@ -752,7 +791,7 @@ class AddRestaurantModal extends Modal {
     __privateAdd(this, _divDescription);
     __privateAdd(this, _divLink);
     __privateAdd(this, _modalForm);
-    __privateAdd(this, _restaurantList2);
+    __privateAdd(this, _onClickAddButton);
     __privateAdd(this, _bindAddButtonEvent, () => {
       __privateGet(this, _addButton).addEventListener("click", (event) => {
         event.preventDefault();
@@ -784,15 +823,15 @@ class AddRestaurantModal extends Modal {
         }
       });
     });
-    __privateAdd(this, _bindEvent4, () => {
+    __privateAdd(this, _bindEvent5, () => {
       __privateGet(this, _bindAddButtonEvent).call(this);
       __privateGet(this, _bindCancleButtonEvent).call(this);
       __privateGet(this, _bindESCEvent).call(this);
       __privateGet(this, _bindModalBackDropEvent).call(this);
     });
-    __privateSet(this, _restaurantList2, restaurantList);
+    __privateSet(this, _onClickAddButton, onClickAddButton);
     __privateMethod(this, _AddRestaurantModal_instances, init_fn).call(this);
-    __privateGet(this, _bindEvent4).call(this);
+    __privateGet(this, _bindEvent5).call(this);
     __privateMethod(this, _AddRestaurantModal_instances, createAddModal_fn).call(this);
     return this;
   }
@@ -805,7 +844,7 @@ _divDistance = new WeakMap();
 _divDescription = new WeakMap();
 _divLink = new WeakMap();
 _modalForm = new WeakMap();
-_restaurantList2 = new WeakMap();
+_onClickAddButton = new WeakMap();
 _AddRestaurantModal_instances = new WeakSet();
 init_fn = function() {
   __privateSet(this, _cancelButton, new Button("button--secondary", "취소하기"));
@@ -819,14 +858,14 @@ init_fn = function() {
       id: "category",
       required: true,
       option: CATEGORY,
-      addDefaultOption: true
+      optionDefault: "선택해주세요"
     })
   }));
   __privateSet(this, _divName, new Input({
     name: "name",
     title: "이름",
     required: true,
-    inputComponent: new InputText("name", true)
+    inputComponent: new InputText({ name: "name", required: true })
   }));
   __privateSet(this, _divDistance, new Input({
     name: "distance",
@@ -837,20 +876,20 @@ init_fn = function() {
       id: "distance",
       required: true,
       option: DISTANCE,
-      addDefaultOption: true
+      optionDefault: "선택해주세요"
     })
   }));
   __privateSet(this, _divDescription, new Input({
     name: "description",
     title: "설명",
     spanText: "메뉴 등 추가 정보를 입력해 주세요.",
-    inputComponent: new InputTextArea("description", false, 30, 5)
+    inputComponent: new InputTextArea({ name: "description" })
   }));
   __privateSet(this, _divLink, new Input({
     name: "link",
     title: "참조 링크",
     spanText: "매장 정보를 확인할 수 있는 링크를 입력해 주세요.",
-    inputComponent: new InputText("link", true)
+    inputComponent: new InputText({ name: "link" })
   }));
   __privateSet(this, _modalForm, document.createElement("form"));
 };
@@ -894,9 +933,9 @@ addNewRestaurant_fn = function() {
     description: formData.description,
     category: formData.category,
     link: formData.link,
-    like: false
+    isLiked: false
   });
-  __privateGet(this, _restaurantList2).addRestaurant(newRestaurant);
+  __privateGet(this, _onClickAddButton).call(this, newRestaurant);
 };
 validateInputs_fn = function() {
   const formData = Object.fromEntries(new FormData(__privateGet(this, _modalForm)));
@@ -916,69 +955,19 @@ _bindAddButtonEvent = new WeakMap();
 _bindCancleButtonEvent = new WeakMap();
 _bindModalBackDropEvent = new WeakMap();
 _bindESCEvent = new WeakMap();
-_bindEvent4 = new WeakMap();
-class LikeHeader {
-  constructor(likeHeaderContainer, leftTitle, rightTitle) {
-    __privateAdd(this, _LikeHeader_instances);
-    __privateAdd(this, _likeHeaderContainer);
-    __privateAdd(this, _leftTitle);
-    __privateAdd(this, _rightTitle);
-    __privateAdd(this, _currentHeader2);
-    __privateAdd(this, _bindEvent5, () => {
-      __privateGet(this, _leftTitle).addEventListener("click", () => {
-        __privateGet(this, _leftTitle).classList.add("selected");
-        __privateGet(this, _rightTitle).classList.remove("selected");
-        __privateSet(this, _currentHeader2, "모든 음식점");
-      });
-      __privateGet(this, _rightTitle).addEventListener("click", () => {
-        __privateGet(this, _leftTitle).classList.remove("selected");
-        __privateGet(this, _rightTitle).classList.add("selected");
-        __privateSet(this, _currentHeader2, "자주 가는 음식점");
-      });
-    });
-    __privateSet(this, _likeHeaderContainer, likeHeaderContainer);
-    __privateSet(this, _currentHeader2, "모든 음식점");
-    __privateMethod(this, _LikeHeader_instances, createLikeHeader_fn).call(this, leftTitle, rightTitle);
-    __privateGet(this, _bindEvent5).call(this);
-  }
-  getElement() {
-    return __privateGet(this, _likeHeaderContainer);
-  }
-  getCurrentHeader() {
-    return __privateGet(this, _currentHeader2);
-  }
-}
-_likeHeaderContainer = new WeakMap();
-_leftTitle = new WeakMap();
-_rightTitle = new WeakMap();
-_currentHeader2 = new WeakMap();
-_LikeHeader_instances = new WeakSet();
-createLikeHeader_fn = function(leftTitle, rightTitle) {
-  const leftTitleDiv = document.createElement("button");
-  leftTitleDiv.classList.add("selected");
-  leftTitleDiv.classList.add("all-restaurants");
-  const rightTitleDiv = document.createElement("button");
-  rightTitleDiv.classList.add("like-restaurants");
-  leftTitleDiv.innerText = leftTitle;
-  rightTitleDiv.innerText = rightTitle;
-  __privateSet(this, _leftTitle, leftTitleDiv);
-  __privateSet(this, _rightTitle, rightTitleDiv);
-  __privateGet(this, _likeHeaderContainer).appendChild(leftTitleDiv);
-  __privateGet(this, _likeHeaderContainer).appendChild(rightTitleDiv);
-};
 _bindEvent5 = new WeakMap();
 class DetailModal extends Modal {
-  constructor(appContainer, restaurantList) {
+  constructor({ appContainer, onClickDeleteButton }) {
     super(appContainer);
     __privateAdd(this, _DetailModal_instances);
     __privateAdd(this, _cancelButton2);
     __privateAdd(this, _deleteButton);
     __privateAdd(this, _star2);
     __privateAdd(this, _currentRestaurant);
-    __privateAdd(this, _restaurantList3);
+    __privateAdd(this, _onClickDeleteButton);
     __privateAdd(this, _bindDeleteButtonEvent, () => {
       __privateGet(this, _deleteButton).addEventListener("click", (event) => {
-        __privateGet(this, _restaurantList3).deleteRestaurant(__privateGet(this, _currentRestaurant).getName());
+        __privateGet(this, _onClickDeleteButton).call(this, __privateGet(this, _currentRestaurant).getName());
         __privateMethod(this, _DetailModal_instances, clearModalContent_fn).call(this);
         this.closeModal();
       });
@@ -1010,11 +999,15 @@ class DetailModal extends Modal {
       __privateGet(this, _bindESCEvent2).call(this);
       __privateGet(this, _bindModalBackDropEvent2).call(this);
     });
-    __privateSet(this, _restaurantList3, restaurantList);
+    __privateSet(this, _onClickDeleteButton, onClickDeleteButton);
     __privateMethod(this, _DetailModal_instances, init_fn2).call(this);
     __privateMethod(this, _DetailModal_instances, createAddModal_fn2).call(this);
     __privateGet(this, _bindEvent6).call(this);
     return this;
+  }
+  setDetailModal(restaurant, restaurantData) {
+    this.addRestaurant(restaurant, restaurantData);
+    this.openModal();
   }
   addRestaurant(restaurant, restaurantData) {
     __privateSet(this, _currentRestaurant, restaurantData);
@@ -1029,7 +1022,7 @@ _cancelButton2 = new WeakMap();
 _deleteButton = new WeakMap();
 _star2 = new WeakMap();
 _currentRestaurant = new WeakMap();
-_restaurantList3 = new WeakMap();
+_onClickDeleteButton = new WeakMap();
 _DetailModal_instances = new WeakSet();
 init_fn2 = function() {
   __privateSet(this, _deleteButton, new Button("button--secondary", "삭제하기"));
@@ -1083,36 +1076,45 @@ class App {
     __privateAdd(this, _sortingFilter);
     __privateAdd(this, _currentCategory2);
     __privateAdd(this, _currentSorting2);
-    __privateAdd(this, _currentHeader3, "모든 음식점");
-    __privateAdd(this, _restaurantList4);
-    __privateAdd(this, _likeHeader);
-    __privateAdd(this, _onChangedCategory, () => {
+    __privateAdd(this, _currentHeader3);
+    __privateAdd(this, _restaurantList2);
+    __privateAdd(this, _$likeHeader);
+    __privateAdd(this, _bindCategoryEvent, () => {
       const categoryElement = __privateGet(this, _categoryFilter).getElement();
       categoryElement.addEventListener("change", (event) => {
         __privateSet(this, _currentCategory2, categoryElement.value);
         __privateMethod(this, _App_instances, handleRestaurantUpdate_fn).call(this);
       });
     });
-    __privateAdd(this, _onChangedSorting, () => {
+    __privateAdd(this, _bindSortingEvent, () => {
       const sortingElement = __privateGet(this, _sortingFilter).getElement();
       sortingElement.addEventListener("change", (event) => {
         __privateSet(this, _currentSorting2, sortingElement.value);
         __privateMethod(this, _App_instances, handleRestaurantUpdate_fn).call(this);
       });
     });
-    __privateAdd(this, _onChangedLikeHeader, () => {
-      __privateGet(this, _likeHeader).getElement().addEventListener("click", () => {
-        __privateSet(this, _currentHeader3, __privateGet(this, _likeHeader).getCurrentHeader());
+    __privateAdd(this, _bindLikeHeaderEvent, () => {
+      __privateGet(this, _$likeHeader).getElement().addEventListener("click", () => {
+        __privateSet(this, _currentHeader3, __privateGet(this, _$likeHeader).getCurrentHeader());
         __privateMethod(this, _App_instances, handleRestaurantUpdate_fn).call(this);
       });
     });
     __privateAdd(this, _bindEvent7, () => {
-      __privateGet(this, _onChangedCategory).call(this);
-      __privateGet(this, _onChangedSorting).call(this);
-      __privateGet(this, _onChangedLikeHeader).call(this);
+      __privateGet(this, _bindCategoryEvent).call(this);
+      __privateGet(this, _bindSortingEvent).call(this);
+      __privateGet(this, _bindLikeHeaderEvent).call(this);
     });
     __privateAdd(this, _modalClickHandler, () => {
       this.addRestaurantModal.openModal();
+    });
+    __privateAdd(this, _handleDeleteRestaurant, (restaurantName) => {
+      __privateGet(this, _restaurantList2).deleteRestaurant(restaurantName);
+    });
+    __privateAdd(this, _handleAddRestaurant, (restaurant) => {
+      __privateGet(this, _restaurantList2).addRestaurant(restaurant);
+    });
+    __privateAdd(this, _handleDetailModal, (clonedRestaurant, restaurantData) => {
+      this.detailModal.setDetailModal(clonedRestaurant, restaurantData);
     });
     __privateMethod(this, _App_instances, init_fn3).call(this);
   }
@@ -1122,8 +1124,8 @@ _sortingFilter = new WeakMap();
 _currentCategory2 = new WeakMap();
 _currentSorting2 = new WeakMap();
 _currentHeader3 = new WeakMap();
-_restaurantList4 = new WeakMap();
-_likeHeader = new WeakMap();
+_restaurantList2 = new WeakMap();
+_$likeHeader = new WeakMap();
 _App_instances = new WeakSet();
 init_fn3 = function() {
   __privateMethod(this, _App_instances, createAppContainer_fn).call(this);
@@ -1155,7 +1157,6 @@ createFilter_fn = function() {
     name: "category",
     id: "category-filter",
     option: CATEGORY,
-    addDefaultOption: true,
     optionDefault: "전체"
   }));
   __privateSet(this, _sortingFilter, new InputDropDown({
@@ -1168,20 +1169,29 @@ createFilter_fn = function() {
   this.filterContainer.appendChild(__privateGet(this, _categoryFilter).getElement());
   this.filterContainer.appendChild(__privateGet(this, _sortingFilter).getElement());
 };
-_onChangedCategory = new WeakMap();
-_onChangedSorting = new WeakMap();
-_onChangedLikeHeader = new WeakMap();
+_bindCategoryEvent = new WeakMap();
+_bindSortingEvent = new WeakMap();
+_bindLikeHeaderEvent = new WeakMap();
 _bindEvent7 = new WeakMap();
 _modalClickHandler = new WeakMap();
 handleRestaurantUpdate_fn = function() {
-  __privateGet(this, _restaurantList4).sortRestaurantList(__privateGet(this, _currentCategory2), __privateGet(this, _currentSorting2), __privateGet(this, _currentHeader3));
+  __privateGet(this, _restaurantList2).sortRestaurantList(__privateGet(this, _currentCategory2), __privateGet(this, _currentSorting2), __privateGet(this, _currentHeader3));
 };
+_handleDeleteRestaurant = new WeakMap();
+_handleAddRestaurant = new WeakMap();
+_handleDetailModal = new WeakMap();
 initAppUI_fn = function() {
-  __privateSet(this, _restaurantList4, new RestaurantList(this.restaurantListContainer, __privateMethod(this, _App_instances, handleRestaurantUpdate_fn).bind(this)));
-  this.detailModal = new DetailModal(this.appContainer, __privateGet(this, _restaurantList4));
-  this.addRestaurantModal = new AddRestaurantModal(this.appContainer, __privateGet(this, _restaurantList4));
-  __privateGet(this, _restaurantList4).setModal(this.detailModal);
+  __privateSet(this, _restaurantList2, new RestaurantList(
+    this.restaurantListContainer,
+    __privateMethod(this, _App_instances, handleRestaurantUpdate_fn).bind(this),
+    __privateGet(this, _handleDetailModal)
+  ));
+  this.detailModal = new DetailModal({
+    appContainer: this.appContainer,
+    onClickDeleteButton: __privateGet(this, _handleDeleteRestaurant)
+  });
+  this.addRestaurantModal = new AddRestaurantModal(this.appContainer, __privateGet(this, _handleAddRestaurant));
   new Header({ appContainer: this.appContainer, onClickIcon: __privateGet(this, _modalClickHandler) });
-  __privateSet(this, _likeHeader, new LikeHeader(this.likeHeaderContainer, "모든 음식점", "자주 가는 음식점"));
+  __privateSet(this, _$likeHeader, new LikeHeader(this.likeHeaderContainer));
 };
 new App();
